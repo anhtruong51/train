@@ -1,0 +1,38 @@
+#!/usr/bin/python
+
+import sys
+import random
+
+SIMULATION_TIME = 72000 * 3600 #total 72,000 hours
+TRAIN_ARRIVE_RATE = 10 * 3600 # trains arrive once every 10 hours
+UNLOAD_TIME = random.uniform(3.5,4.5) #unload rate between 3.5 and 4.5 hours
+queue = []
+
+
+time = 0
+num_train = 0
+total_trains = 0
+loading = 0
+loading_time_count = 0
+busy_time = 0
+while(time <= SIMULATION_TIME):
+    if(loading_time_count != 0 and loading_time_count == UNLOAD_TIME):
+        loading = 0
+        queue.pop(0)
+        loading_time_count = 0
+        total_trains += 1
+    if(time % 10 == 0):
+        queue.append(num_train)
+        num_train += 1
+        loading = 1
+        UNLOAD_TIME = random.uniform(3.5,4.5) * 3600
+        loading_time_count = 0
+    if(loading):
+        loading_time_count += 1
+        busy_time += 1
+
+    time += 1
+
+print(total_trains)
+print(time)
+print(busy_time)
